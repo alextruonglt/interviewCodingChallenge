@@ -19,6 +19,19 @@
  * will pass valid data to your function.
  */
 
+// Helper function to check if an array contains all drawn numbers
+function hasAllDrawnNumbers(arr, drawnNumbers) {
+  return drawnNumbers.every((number) => arr.includes(number));
+}
+
+
+// Helper function to check for a win in a row, column, or diagonal
+function checkForWin(arr, drawnNumbers) {
+    return hasAllDrawnNumbers(arr, drawnNumbers);
+}
+
+
+
 function checkForBingo(bingoCard, drawnNumbers) {
   // Create an array to represent the board as a 2D matrix
   const board = [];
@@ -26,34 +39,24 @@ function checkForBingo(bingoCard, drawnNumbers) {
     board.push(bingoCard.slice(i * 5, (i + 1) * 5));
   }
 
-  // Helper function to check if an array contains all drawn numbers
-  function hasAllDrawnNumbers(arr) {
-    return drawnNumbers.every((number) => arr.includes(number));
-  }
-
-  // Helper function to check for a win in a row, column, or diagonal
-  function checkForWin(arr) {
-    return hasAllDrawnNumbers(arr);
-  }
-
   // Check for rows, columns, and diagonals if there's a win
   for (let i = 0; i < 5; i++) {
     // Check rows
-    if (checkForWin(board[i])) return true;
+    if (checkForWin(board[i], drawnNumbers)) return true;
 
     // Check for columns
     const column = [];
     for (let j = 0; j < 5; j++) {
       column.push(board[j][i]);
     }
-    if (checkForWin(column)) return true;
+    if (checkForWin(column, drawnNumbers)) return true;
 
     // Check if there's diagnals
     if (i === 2) {
       // Center element, check both diagonals
       const diagonal1 = [board[0][0], board[1][1], board[3][3], board[4][4]];
       const diagonal2 = [board[0][4], board[1][3], board[3][1], board[4][0]];
-      if (checkForWin(diagonal1) || checkForWin(diagonal2)) return true;
+      if (checkForWin(diagonal1, drawnNumbers) || checkForWin(diagonal2, drawnNumbers)) return true;
     }
   }
 
@@ -62,12 +65,8 @@ function checkForBingo(bingoCard, drawnNumbers) {
 
 
 
-
-
-
-
 // this should return true with diagonal + free
-checkForBingo(
+console.log(checkForBingo(
   [
     8, 29, 35, 54, 65,
     13, 24, 44, 48, 67,
@@ -78,10 +77,11 @@ checkForBingo(
   [
     8, 24, 53, 72
   ]
+)
 );
 
 // this should return false
-checkForBingo(
+console.log(checkForBingo(
   [
    8, 29, 35, 54, 65,
    13, 24, 44, 48, 67,
@@ -92,6 +92,7 @@ checkForBingo(
   [
     1, 33, 53, 65, 29, 75
   ]
+)
 );
 
 module.exports = checkForBingo;
