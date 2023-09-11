@@ -19,22 +19,52 @@
  * will pass valid data to your function.
  */
 
-function checkForBingo (bingoCard, drawnNumbers) {
-  // this code for debug purposes, you can remove.
-  console.log('Drawn Numbers: ' + JSON.stringify(drawnNumbers));
+function checkForBingo(bingoCard, drawnNumbers) {
+  // Create an array to represent the board as a 2D matrix
+  const board = [];
+  for (let i = 0; i < 5; i++) {
+    board.push(bingoCard.slice(i * 5, (i + 1) * 5));
+  }
 
-  for (let i=0, len=bingoCard.length; i<len; i++) {
-    let row = Math.floor(i/5);
-    let col = i % 5;
-   //  console.log(`${row},${col}: ${bingoCard[i]}`);
+  // Helper function to check if an array contains all drawn numbers
+  function hasAllDrawnNumbers(arr) {
+    return drawnNumbers.every((number) => arr.includes(number));
+  }
+
+  // Helper function to check for a win in a row, column, or diagonal
+  function checkForWin(arr) {
+    return hasAllDrawnNumbers(arr);
+  }
+
+  // Check for rows, columns, and diagonals if there's a win
+  for (let i = 0; i < 5; i++) {
+    // Check rows
+    if (checkForWin(board[i])) return true;
+
+    // Check for columns
+    const column = [];
+    for (let j = 0; j < 5; j++) {
+      column.push(board[j][i]);
+    }
+    if (checkForWin(column)) return true;
+
+    // Check if there's diagnals
+    if (i === 2) {
+      // Center element, check both diagonals
+      const diagonal1 = [board[0][0], board[1][1], board[3][3], board[4][4]];
+      const diagonal2 = [board[0][4], board[1][3], board[3][1], board[4][0]];
+      if (checkForWin(diagonal1) || checkForWin(diagonal2)) return true;
+    }
   }
 
   return false;
 }
 
-module.exports = checkForBingo;
 
-// here are some samples
+
+
+
+
 
 // this should return true with diagonal + free
 checkForBingo(
@@ -64,4 +94,4 @@ checkForBingo(
   ]
 );
 
-//Testing
+module.exports = checkForBingo;
