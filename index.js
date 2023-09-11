@@ -33,7 +33,7 @@ function checkForWin(arr, drawnNumbers) {
 
 
 function checkForBingo(bingoCard, drawnNumbers) {
-  // Create an array to represent the board as a 2D matrix
+  // Makes the board as a 2D matrix
   const board = [];
   for (let i = 0; i < 5; i++) {
     board.push(bingoCard.slice(i * 5, (i + 1) * 5));
@@ -43,7 +43,6 @@ function checkForBingo(bingoCard, drawnNumbers) {
   for (let i = 0; i < 5; i++) {
     // Check rows
     if (checkForWin(board[i], drawnNumbers)) return true;
-
     // Check for columns
     const column = [];
     for (let j = 0; j < 5; j++) {
@@ -51,11 +50,12 @@ function checkForBingo(bingoCard, drawnNumbers) {
     }
     if (checkForWin(column, drawnNumbers)) return true;
 
-    // Check if there's diagnals
+    // Check the diagonals 
     if (i === 2) {
-      // Center element, check both diagonals
+      // Center the element, check both diagonals
       const diagonal1 = [board[0][0], board[1][1], board[3][3], board[4][4]];
       const diagonal2 = [board[0][4], board[1][3], board[3][1], board[4][0]];
+      // Check the wins after making the diagonals
       if (checkForWin(diagonal1, drawnNumbers) || checkForWin(diagonal2, drawnNumbers)) return true;
     }
   }
